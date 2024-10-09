@@ -1,3 +1,19 @@
+# Автор: Малюков Д. И.
+# Программа: Игра 15
+# Описание: Данная программа реализует различные алгоритмы поиска пути для решения игры 15.
+# Используются такие алгоритмы, как поиск в глубину и в ширину
+# Версия: 08.10.2024
+
+def print_header():
+    print("##############################################")
+    print("# Author: Малюков Дмитрий Иванович")
+    print("# Program: 15 Puzzle Solver")
+    print(
+        "# Description: This program implements various search algorithms to solve the 15-puzzle. "
+    )
+    print("# The program utilizes Depth-First Search (DFS) and Breadth-First Search (BFS) to find the optimal solution.")
+    print("# Version: 08.10.2024")
+    print("##############################################")
 class Situation:
     def __init__(self, board, position, goal):
         self.board = board
@@ -20,36 +36,36 @@ class Situation:
             print()
         print("-" * 15)
 
-
-def make_move(current_state, action):
+# порождающая функция
+def make_move(situation, action):
     """
     Делает ход в игре пятнашки.
     """
-    empty_row, empty_col = current_state.position
+    empty_row, empty_col = situation.position
 
-    new_board = [row[:] for row in current_state.board]  # Создаем копию
+    new_board = [row[:] for row in situation.board]  # Создаем копию
 
     if action == 0 and empty_row > 0:  # Вверх
         new_board[empty_row][empty_col] = new_board[empty_row - 1][empty_col]
         new_board[empty_row - 1][empty_col] = 0
-        return Situation(new_board, (empty_row - 1, empty_col), current_state.goal)
-    elif action == 1 and empty_col < len(current_state.board[0]) - 1:  # Вправо
+        return Situation(new_board, (empty_row - 1, empty_col), situation.goal)
+    elif action == 1 and empty_col < len(situation.board[0]) - 1:  # Вправо
         new_board[empty_row][empty_col] = new_board[empty_row][empty_col + 1]
         new_board[empty_row][empty_col + 1] = 0
-        return Situation(new_board, (empty_row, empty_col + 1), current_state.goal)
-    elif action == 2 and empty_row < len(current_state.board) - 1:  # Вниз
+        return Situation(new_board, (empty_row, empty_col + 1), situation.goal)
+    elif action == 2 and empty_row < len(situation.board) - 1:  # Вниз
         new_board[empty_row][empty_col] = new_board[empty_row + 1][empty_col]
         new_board[empty_row + 1][empty_col] = 0
-        return Situation(new_board, (empty_row + 1, empty_col), current_state.goal)
+        return Situation(new_board, (empty_row + 1, empty_col), situation.goal)
     elif action == 3 and empty_col > 0:  # Влево
         new_board[empty_row][empty_col] = new_board[empty_row][empty_col - 1]
         new_board[empty_row][empty_col - 1] = 0
-        return Situation(new_board, (empty_row, empty_col - 1), current_state.goal)
+        return Situation(new_board, (empty_row, empty_col - 1), situation.goal)
 
     return None
 
 
-def generate_moves(current_state, move_number):
+def generate_moves(situation, move_number):
     """
     Генерация возможных ходов для текущей ситуации.
     """
@@ -80,31 +96,31 @@ def dfs(initial, initial_pos, goal, MAX_DEPTH):
     while stack:
 
         # Get current situation
-        current_state, path = stack.pop()
+        situation, path = stack.pop()
 
         # Check goal
-        if current_state.is_solved():
+        if situation.is_solved():
             print("Конечное поле:")
-            current_state.print_board()
+            situation.print_board()
             return path
 
         # Marking the situation as viewed
-        visited.add(tuple(current_state.convert_to_line(current_state.board)))
+        visited.add(tuple(situation.convert_to_line(situation.board)))
 
         # Generate new situations and add its to stack
-        for action in generate_moves(current_state, len(path)):  # Передача move_number (len(path))
-            next_state = make_move(current_state, action)
+        for action in generate_moves(situation, len(path)):  # Передача move_number (len(path))
+            next_state = make_move(situation, action)
             if len(path) < MAX_DEPTH and next_state and next_state.isValid(*next_state.position) and \
                     tuple(next_state.convert_to_line(next_state.board)) not in visited:
-                print("Промежуточное поле:")
-                next_state.print_board()
+                #print("Промежуточное поле:")
+                #next_state.print_board()
                 stack.append((next_state, path + [action]))
                 move_number += 1  # Увеличиваем move_number при добавлении в стек
 
     # Solution doesn't find
     return None
 
-
+# создание игрового поля
 def play_game():
     initial_state = [[6, 8, 4],
                      [3, 7, 2],
@@ -124,4 +140,5 @@ def play_game():
 
 
 if __name__ == "__main__":
+    print_header()
     play_game()
