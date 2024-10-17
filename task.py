@@ -1,24 +1,33 @@
-from print_header import print_header
-from make_move import make_move
-from model import Situation
-from search_deep import search_depth, generate_moves
-
 # Автор: Малюков Д. И.
 # Программа: Игра 15
 # Описание: Данная программа реализует различные алгоритмы поиска пути для решения игры 15.
 # Используются такие алгоритмы, как поиск в глубину и в ширину
 # Версия: 08.10.2024
 
+from print_header import print_header
+from make_move import make_move
+from model import Situation
+from search_deep import search_depth, generate_moves
+
 # создание игрового поля
 def play_game():
-    init_situation = [[6, 8, 4],
-                     [3, 7, 2],
-                     [1, 5, 0]]
+    board = [[6, 8, 4],
+            [3, 7, 2],
+            [1, 5, 0]]
     
+    init_pos = (2, 2)
+    goal = [[1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 0]]
 
     MAX_DEPTH = int(input("Введите максимальную глубину поиска: "))
+    choice = "dfs"
+    initial_situation = Situation(board, init_pos, goal)
     
-    solution = search_depth(init_situation, MAX_DEPTH)
+    if choice == "dfs":
+      solution = search_depth(initial_situation, MAX_DEPTH)
+    else:
+      pass
 
     if solution:
         print(f"Решение найдено! Ходы: {solution}")

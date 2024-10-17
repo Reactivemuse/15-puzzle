@@ -22,16 +22,8 @@ def search_depth(init, MAX_DEPTH):
         A list of actions (0-3, representing up, down, left, right) that lead to the goal situation,
         or None if no solution is found within the specified depth.
     """
-    
-    init_pos = (2, 2)
-    goal = [[1, 2, 3],
-            [4, 5, 6],
-            [7, 8, 0]]
-
-    # Initializing the initial situation
-    init_situation = Situation(init, init_pos, goal)
-        
-    stack = [(init_situation, [])]
+       
+    stack = [(init, [])]
     visited = set()
     move_number = 0
 
