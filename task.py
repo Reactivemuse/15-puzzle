@@ -10,6 +10,7 @@ from model import Situation
 from search_deep import search_depthr
 from search_deep_grad import search_depth_grad
 from solution import search_depth, generate_moves
+from bfs import bfs
 
 # создание игрового поля
 
@@ -24,14 +25,16 @@ def play_game():
             [7, 8, 0]]
 
     MAX_DEPTH = int(input("Введите максимальную глубину поиска: "))
-    choice = "dfs"
+    choice = "bfs"
     initial_situation = Situation(board, init_pos, goal)
 
     if choice == "dfs":
-        solution = search_depth(initial_situation, MAX_DEPTH)
-    else:
-        solution = search_depth_grad(initial_situation, MAX_DEPTH)
-
+      solution = search_depth(initial_situation, MAX_DEPTH)
+    elif choice == "dfs_grad":
+      solution = search_depth_grad(initial_situation, MAX_DEPTH)
+    elif choice == "bfs":
+      solution = bfs(initial_situation)
+      
     if solution:
         print(f"Решение найдено! Ходы: {solution}")
         print(f"Количество ходов: {len(solution)}")

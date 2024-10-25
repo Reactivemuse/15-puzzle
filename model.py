@@ -24,6 +24,9 @@ class Situation:
             print()
         print("-" * 15)
     
+    def __hash__(self):
+        return hash((tuple(self.position), tuple(self.convertation(self.board))))
+    
     def __eq__(self, other):
         if len(self.board) != len(other.board) or len(self.board[0]) != len(other.board[0]):
             return False
