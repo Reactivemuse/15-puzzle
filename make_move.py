@@ -1,6 +1,15 @@
 from model import Situation
+import copy
 
-# порождающая функция
+
+n = 4
+ACTIONS = {
+    "up": (0, -1),
+    "down": (0, 1),
+    "left": (-1, 0),
+    "right": (1, 0)
+}
+
 def make_move(situation, action):
     """
     Делает ход в игре пятнашки.

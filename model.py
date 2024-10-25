@@ -1,8 +1,12 @@
 class Situation:
-    def __init__(self, board, position, goal):
-        self.board = board
+    def __init__(self, board, position, goal, depth=0):
+        self.board = board  # Не копируем board в __init__, копирование происходит в make_move
         self.position = position
         self.goal = goal
+        self.size = 3
+        self.depth = depth
+        self.n = 4
+
 
     def is_solved(self):
         return self.board == self.goal
@@ -19,4 +23,12 @@ class Situation:
                 print(num, end=" ")
             print()
         print("-" * 15)
-        
+    
+    def __eq__(self, other):
+        if len(self.board) != len(other.board) or len(self.board[0]) != len(other.board[0]):
+            return False
+        for i in range(len(self.board)):
+            for j in range(len(self.board[0])):
+                if self.board[i][j] != other.board[i][j]:
+                    return False
+        return True  # Если все элементы совпадают

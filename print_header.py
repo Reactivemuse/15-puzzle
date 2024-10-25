@@ -6,6 +6,6 @@ def print_header():
         "# Description: This program implements various search algorithms to solve the 15-puzzle. "
     )
     print("# The program utilizes Depth-First Search (DFS) and Breadth-First Search (BFS) to find the optimal solution.")
-    print("# Version: 08.10.2024")
+    print("# Version: 17.10.2024")
     print("##############################################")
     

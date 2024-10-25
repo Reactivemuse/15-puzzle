@@ -1,55 +1,31 @@
 from model import Situation
 from make_move import make_move
 
-def generate_moves(situation, move_number):
+def search_depthr(current_situation, path = [], stack = []):
     """
-    Генерация возможных ходов для текущей ситуации.
+    Рекурсивный поиск в глубину (Depth-First Search) в игре "Волк, коза и капуста".
+    
+    :param current_situation: текущая ситуация игры
+    :param path: путь действий, ведущий к текущей ситуации
+    :return: список действий, приводящий к целевой ситуации, или None, если решение не найдено
     """
-    return [0, 1, 2, 3]  # Возвращаем все возможные ходы (вверх, вправо, вниз, влево)
+    if not stack:
+        stack = [current_situation]
 
+    # Проверяем, достигнута ли целевая ситуация
+    if current_situation.is_solved():
+        return path
 
-def search_depth(init, MAX_DEPTH):
-    """
-    Performs Depth-First Search (DFS) to find a solution to the 15-puzzle.
+    for action in range(current_situation.n):
+        next_situation = make_move(current_situation, action)
 
-    Args:
-        init: The initial situation of the puzzle as a 2D list.
-        init_pos: The position of the empty tile in the initial situation as a tuple.
-        goal: The goal situation of the puzzle.
-        MAX_DEPTH: The maximum depth of the search.
+        if not next_situation or next_situation in stack:
+            continue
 
-    Returns:
-        A list of actions (0-3, representing up, down, left, right) that lead to the goal situation,
-        or None if no solution is found within the specified depth.
-    """
-       
-    stack = [(init, [])]
-    visited = set()
-    move_number = 0
+        # Если новая ситуация валидна
+        if next_situation:
+            result = search_depth(next_situation, path + [action], stack + [next_situation])    
+            if result:
+                return result
 
-    while stack:
-
-        # Get current situation
-        situation, path = stack.pop()
-
-        # Check goal
-        if situation.is_solved():
-            print("Конечное поле:")
-            situation.print_board()
-            return path
-
-        # Marking the situation as viewed
-        visited.add(tuple(situation.convertation(situation.board)))
-
-        # Generate new situations and add its to stack
-        for action in generate_moves(situation, len(path)):  # Передача move_number (len(path))
-            next_situation = make_move(situation, action)
-            if len(path) < MAX_DEPTH and next_situation and next_situation.isValid(*next_situation.position) and \
-                    tuple(next_situation.convertation(next_situation.board)) not in visited:
-                #print("Промежуточное поле:")
-                #next_situation.print_board()
-                stack.append((next_situation, path + [action]))
-                move_number += 1  # Увеличиваем move_number при добавлении в стек
-
-    # Solution doesn't find
-    return None
+    return None  # Решение не найдено
